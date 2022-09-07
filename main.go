@@ -6,11 +6,14 @@ import (
     "log"
     "net/http"
     "os"
+	"encoding/json"
 )
 
-func main() {
-	fmt.Println("Hello World")
+type Response struct {
+    Quote    string    `json:"quote"`
+}
 
+func main() {
 	response, err := http.Get("https://api.kanye.rest/")
 	if err != nil {
         fmt.Print(err.Error())
@@ -22,5 +25,8 @@ func main() {
         log.Fatal(err)
     }
 
-    fmt.Println(string(responseData) + " Zack and John")
+	var responseObject Response
+	json.Unmarshal(responseData, &responseObject)
+
+	fmt.Println(responseObject.Quote + " - Kanye - Zack and John")
 }
